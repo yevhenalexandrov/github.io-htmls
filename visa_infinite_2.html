@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="uk">
+
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.7.5/lottie.min.js'></script>
+    <title>Підтвердження покупки</title>
+    <style>
+        @font-face {
+            font-family: "Gilroy";
+            src: url("{{baseUrl}}/public/push/fonts/Gilroy-400.woff") format('woff');
+        }
+
+        @font-face {
+            font-family: "Gilroy";
+            src: url("{{baseUrl}}/public/push/fonts/Gilroy-500.woff") format('woff');
+            font-weight: 500;
+        }
+
+        @font-face {
+            font-family: "Gilroy";
+            src: url("{{baseUrl}}/public/push/fonts/Gilroy-600.woff") format('woff');
+            font-weight: 600;
+        }
+
+
+        /* Загальні стилі */
+        body {
+            font-family: Gilroy, Arial, sans-serif;
+            background-color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 390px;
+            height: 80%;
+            max-height: 500px;
+            width: 100%;
+            padding: 20px;
+            background-color: #ffffff;
+            border: 1px solid #000000;
+            border-radius: 60px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            overflow-y: auto;
+            margin: 0 7px;
+        }
+
+        .icons {
+            gap: 50px;
+            display: flex;
+            justify-content: space-around;
+        }
+
+
+        .instructions {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            height: 100%;
+        }
+
+        .title {
+            color: #000000;
+            font-size: 30px;
+            font-weight: 600;
+            margin-top: 20px;
+            margin-bottom: 0;
+        }
+
+        .instruction-text {
+            border-radius: 21px;
+            opacity: 1;
+            gap: 12px;
+            padding: 21px 12px;
+            background: #CBCBCB40;
+            line-height: 140%;
+            letter-spacing: -0.3px;
+            text-align: center;
+            color: #000000;
+            font-size: 20px;
+            font-weight: 400;
+            display: flex;
+            align-items: center;
+            margin: 0;
+        }
+
+        .timer {
+            color: #00C54D;
+            font-size: 33px;
+            font-weight: normal;
+            margin-top: 20px;
+        }
+
+
+        #animation-lottie {
+            width: 40px;
+            height: 65%;
+            max-height: 80px;
+            margin: 10px auto 0;
+        }
+
+        .help-section {
+            margin-top: 12px;
+            max-width: 334px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .help-header {
+            color: #000000;
+            cursor: pointer;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            list-style: none;
+        }
+
+        .help-header::-webkit-details-marker,
+        .help-header::marker {
+            display: none;
+            content: none;
+        }
+
+        .support-icon {
+            flex-shrink: 0;
+            transition: transform 0.3s ease;
+        }
+
+        .help-section[open] .support-icon {
+            transform: rotate(90deg);
+        }
+
+        .warning-text {
+            color: #000000;
+            font-size: 14px;
+            font-weight: 400;
+        }
+
+        .contact-info {
+            color: #000000;
+            font-weight: 600;
+            margin-top: 20px;
+        }
+
+        .contact-info span {
+            display: block;
+        }
+
+        .service-info {
+            color: #000000;
+            margin: 10px;
+        }
+
+        .oob-fallback {
+            margin-top: 20px;
+        }
+
+        .oob-fallback input[type="submit"] {
+            width: 100%;
+            max-width: 280px;
+            padding: 14px 24px;
+            border: none;
+            border-radius: 21px;
+            background-color: #00C54D;
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            letter-spacing: 0.04em;
+        }
+
+        html.js .oob-fallback {
+            display: none;
+        }
+
+        html.js.no-push-js .oob-fallback {
+            display: block;
+        }
+
+        html:not(.js) .timer,
+        html:not(.js) #animation-lottie,
+        html.js.no-push-js .timer,
+        html.js.no-push-js #animation-lottie {
+            display: none;
+        }
+    </style>
+    <script>document.documentElement.classList.add("js");</script>
+
+</head>
+
+<body>
+<div class="container">
+    <div class="icons">
+        <img src="{{baseUrl}}/public/push/img/asvio-prem.svg" alt="Asvio Icon" class="icon" width="200"/>
+        <img src="{{baseUrl}}/public/push/img/visa-prem.svg" alt="Visa Icon" class="icon" width="66"/>
+    </div>
+    <div class="instructions">
+        <h1 class="title" data-i18n="title">Підтвердження покупки</h1>
+        <p class="instruction-text" data-i18n="instruction">
+            Будь ласка, підтвердіть свою покупку у додатку вашого банку.
+        </p>
+        <div id="timerDisplay" class="timer">%timeout%</div>
+        <div id="animation-lottie">
+            <script>
+                const animation = bodymovin.loadAnimation({
+                    container: document.getElementById('animation-lottie'),
+                    renderer: 'svg',
+                    loop: true,
+                    autoplay: true,
+                    path: '{{baseUrl}}/public/push/img/lottie.json',
+                })
+            </script>
+        </div>
+
+        <details class="help-section">
+            <summary class="help-header">
+                <span data-i18n="helpTitle">Потрібна допомога?</span>
+                <svg id="arrow" class="support-icon" width="12" height="13" viewBox="0 0 12 13" fill="none"
+                     xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="6" cy="6.5" r="6" fill="#00C54D"></circle>
+                    <path
+                            d="M8.35355 6.85355C8.54882 6.65829 8.54882 6.34171 8.35355 6.14645L5.17157 2.96447C4.97631 2.7692 4.65973 2.7692 4.46447 2.96447C4.2692 3.15973 4.2692 3.47631 4.46447 3.67157L7.29289 6.5L4.46447 9.32843C4.2692 9.52369 4.2692 9.84027 4.46447 10.0355C4.65973 10.2308 4.97631 10.2308 5.17157 10.0355L8.35355 6.85355ZM7 7H8V6H7V7Z"
+                            fill="white"></path>
+                </svg>
+            </summary>
+            <div class="help-content" id="helpContent">
+                <p class="warning-text" data-i18n="helpText">
+                    Якщо у вас виникли проблеми з підтвердженням, зв'яжіться з нами за
+                    наступними номерами:
+                </p>
+                <div class="contact-info">
+                    <span>0 44 394 88 00</span>
+                    <span>0 800 30 30 50</span>
+                </div>
+            </div>
+        </details>
+        <p class="service-info" data-i18n="serviceInfo">
+            Послугу надає ТОВ «АМО ФІНТЕХ»
+        </p>
+    </div>
+    <form class="oob-fallback" method="POST" action="{{OOB_URL}}">
+        <input name="threeDSSessionData" type="hidden" value="{{TRANSACTION_ID}}"/>
+        <input type="submit" value="Підтвердити" />
+    </form>
+</div>
+<script src="{{baseUrl}}/public/push/script.js" onerror="document.documentElement.classList.add('no-push-js')"></script>
+<script>
+    window.transactionId = "{{TRANSACTION_ID}}";
+    window.timer = Number("{{TIMER}}");
+    window.getStatusUrl = "{{GET_STATUS_URL}}";
+    window.oobUrl = "{{OOB_URL}}";
+    window.locale = "{{LOCALE}}";
+</script>
+</body>
+</html>
