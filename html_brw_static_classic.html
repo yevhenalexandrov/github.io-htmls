@@ -1,0 +1,403 @@
+<html lang="{{currentRetriesInfoText}}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3ds template</title>
+    <style>
+        @font-face {
+            font-family: "Amo";
+            src: url("/public/font/Amo-Bold.ttf") format("truetype");
+            font-weight: 700;
+        }
+
+        @font-face {
+            font-family: "Amo";
+            src: url("/public/font/Amo-Regular.ttf") format("truetype");
+            font-weight: 400;
+        }
+
+        * {
+            font-family: Amo;
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 440px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            width: auto;
+            margin: 0 auto;
+            padding: 24px 20px;
+            background: #FFF;
+            /* delete border from screen */
+            border-radius: 72px;
+            border: 1px solid #000;
+            /* delete border from screen */
+        }
+
+        .form-otp_single {
+            font-size: 1.5rem;
+            letter-spacing: 1rem;
+            text-align: center;
+            border: none;
+            outline: none;
+            width: 100%;
+            max-width: 300px;
+            padding: 0.5rem;
+            box-sizing: border-box;
+            background: none;
+            caret-color: transparent;
+        }
+
+        .form-otp_single:focus {
+            /*outline: none;*/
+        }
+
+        .form-otp_single::placeholder {
+            color: #000;
+            font-size: 32px;
+        }
+
+
+        .logo-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-right: 10px;
+        }
+
+        .logo-visa img {
+            width: 45px;
+            height: 50px;
+        }
+
+        .logo-asvio img {
+            margin-right: 10px;
+        }
+
+        .title-container {
+            text-align: center;
+        }
+
+        .title-h2 {
+            font-family: "Amo";
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .text {
+            font-size: 16px;
+        }
+
+        .details-container {
+            padding: 16px;
+            border-radius: 20px;
+            background: rgba(203, 203, 203, 0.12);
+        }
+
+        .details-title {
+            font-size: 16px;
+            text-align: center;
+        }
+
+        .details-child {
+            font-size: 16px;
+            display: flex;
+        }
+
+        .form {
+            display: block;
+        }
+
+        .form-btn {
+            background: #01C44C;
+            border-radius: 1000px;
+            border: none;
+            height: 44px;
+            color: #ffffff;
+            font-size: 20px;
+        }
+
+        .form-otp {
+            height: 44px;
+            display: flex;
+            justify-content: center;
+            border-radius: 1000px;
+            border: 1px solid #000;
+            padding: 5px;
+            gap: 10px;
+        }
+
+        :focus-visible {
+            outline: none;
+        }
+
+        .d-center {
+            display: flex;
+            justify-content: center;
+        }
+
+        .retry-btn {
+            font-size: 20px;
+            color: rgba(1, 196, 76, 0.40);
+            background-color: #FFF;
+            border: none;
+        }
+
+        .cancel-btn {
+            background-color: #FFF;
+            border: none;
+            color: #000;
+            font-size: 16px;
+        }
+
+        .form-otp_cancel {
+
+        }
+
+        .form-otp_cancel:hover {
+            text-decoration: underline;
+        }
+
+        .help-container {
+        }
+
+        .help-title {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+            list-style: none;
+        }
+
+        .help-title::-webkit-details-marker,
+        .help-title::marker {
+            display: none;
+            content: none;
+        }
+
+        .help-details[open] #arrow {
+            transform: rotate(90deg);
+        }
+
+        .help-text {
+        }
+
+        .help-number a {
+            color: #000;
+            text-decoration: none;
+        }
+
+        .help-number a:hover {
+            text-decoration: underline;
+            color: #000;
+        }
+
+        .help-footer {
+        }
+
+        /* base style */
+        .center {
+            text-align: center;
+        }
+
+        .bold {
+            font-weight: bold;
+        }
+
+        .w100 {
+            width: 100%;
+        }
+
+        .w50 {
+            width: 50%;
+        }
+
+        .mb-50 {
+            margin-bottom: 50px;
+        }
+
+        .mb-36 {
+            margin-bottom: 36px;
+        }
+
+        .mb-24 {
+            margin-bottom: 24px;
+        }
+
+        .mb-16 {
+            margin-bottom: 16px;
+            cursor: pointer;
+        }
+
+        .mb-12 {
+            margin-bottom: 12px;
+        }
+
+        .mb-8 {
+            margin-bottom: 8px;
+        }
+
+        .mb-2 {
+            margin-bottom: 2px;
+        }
+        #arrow {
+            cursor: pointer;
+        }
+        #cancel {
+            text-decoration: none;
+            cursor: pointer;
+        }
+        #cancel:hover {
+            text-decoration: underline;
+            color: #000;
+        }
+
+        .otp-fallback {
+            display: block;
+        }
+
+        .otp-js-form {
+            display: none;
+        }
+
+        html.js .otp-fallback {
+            display: none;
+        }
+
+        html.js .otp-js-form {
+            display: block;
+        }
+
+        html.js.no-otp-js .otp-fallback {
+            display: block;
+        }
+
+        html.js.no-otp-js .otp-js-form {
+            display: none;
+        }
+
+    </style>
+    <script>document.documentElement.classList.add("js");</script>
+</head>
+
+<body>
+<div class="container">
+    <div class="logo-container mb-16">
+        <div class="logo-amo"><img src="/public/img/AMO.svg" alt="AMO"></div>
+        <div class="logo-asvio"><img src="/public/img/ASVIO.svg" alt="ASVIO"></div>
+        <div class="logo-visa"><img src="/public/img/VisaSecure.png" alt="VISA"></div>
+    </div>
+    <div class="title-container mb-24">
+        <h2 class="title-h2 mb-16 bold">{{challengeInfoHeader}}</h2>
+        <div class="text">{{challengeInfoLabel}}</div>
+    </div>
+    <div class="details-container mb-24">
+        <div class="details-title mb-8 bold">{{challengeInfoText}}</div>
+        <div class="details-info">
+            <div class="details-child mb-8">
+                <div class="sm-text w50" id="merchant">Торговець:</div>
+                <div class="sm-text w50">{{#merchantName}} {{merchantName}}{{/merchantName}}</div>
+            </div>
+            <div class="details-child mb-8">
+                <div class="sm-text w50" id="purchase">Покупка:</div>
+                <div class="sm-text w50">{{#purchaseAmount}} {{purchaseAmount}}{{/purchaseAmount}}</div>
+            </div>
+            <div class="details-child mb-8">
+                <div class="sm-text w50" id="purchase_date">Дата покупки:</div>
+                <div class="sm-text w50">{{#purchaseDate}} {{purchaseDate}}{{/purchaseDate}}</div>
+            </div>
+            <div class="details-child mb-8">
+                <div class="sm-text w50" id="card_number">Номер картки:</div>
+                <div class="sm-text w50">{{#accountNumber}} **** {{accountNumber}}{{/accountNumber}}</div>
+            </div>
+        </div>
+    </div>
+    <div class="form-container  ">
+        <form class="form otp-js-form w100" action="{{acsURL}}/browser/otp" method="POST">
+            <div class="mb-8 bold center">{{enterCodeTitle}}</div>
+            <!-- <input class="w100 mb-16" type="text"> -->
+            <div id="otp-input" class="form-otp mb-16">
+
+                <input
+                        name="code"
+                        class="form-otp_single"
+                        type="text"
+                        id="otp"
+                        maxlength="6"
+                        pattern="[0-9]{6}"
+                        inputmode="numeric"
+                        autocomplete="one-time-code"
+                        placeholder="______"
+                        oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 6);"
+                >
+            <input name="threeDSSessionData" type="hidden" value="{{threeDSSessionData}}"/>
+            </div>
+            <button type="submit" class="form-btn bold w100 mb-16">{{submitAuthenticationLabel}}</button>
+            <div class="d-center mb-16">
+                {{#resendInformationLabel}}
+                <input type="submit" class="retry-btn active" id="retry" name="resend" value="{{resendInformationLabel}}">
+                {{/resendInformationLabel}}
+            </div>
+            
+            <div class="d-center">
+                <input type="submit" name="cancel" class="cancel-btn form-otp_cancel center" value="{{cancel}}" id="cancel">
+            </div>
+            <!--<div class="d-center">
+                <a href="https://www.google.com" class="cancel-btn form-otp_cancel center" id="cancel">Скасувати</a>
+            </div>
+-->
+        </form>
+        <form class="form otp-fallback w100" action="{{acsURL}}/browser/otp" method="POST">
+            <div class="mb-8 bold center">{{enterCodeTitle}}</div>
+            <div class="form-otp mb-16">
+                <input
+                        name="code"
+                        class="form-otp_single"
+                        type="text"
+                        maxlength="6"
+                        pattern="[0-9]{6}"
+                        inputmode="numeric"
+                        autocomplete="one-time-code"
+                        placeholder="______"
+                        required
+                >
+            </div>
+            <input name="threeDSSessionData" type="hidden" value="{{threeDSSessionData}}"/>
+            <button type="submit" class="form-btn bold w100 mb-16">{{submitAuthenticationLabel}}</button>
+            <div class="d-center">
+                <input type="submit" name="cancel" class="cancel-btn form-otp_cancel center" value="{{cancel}}">
+            </div>
+        </form>
+    </div>
+    <div class="help-container">
+        <details class="help-details">
+            <summary class="help-title center mb-8">
+                <div class="bold">{{expandInfoLabel}}</div>
+                <svg id="arrow" xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 13 13" fill="none">
+                    <circle cx="6.5" cy="6.5" r="6" fill="#01C44C"></circle>
+                    <path d="M8.85355 6.85355C9.04882 6.65829 9.04882 6.34171 8.85355 6.14645L5.67157 2.96447C5.47631 2.7692 5.15973 2.7692 4.96447 2.96447C4.7692 3.15973 4.7692 3.47631 4.96447 3.67157L7.79289 6.5L4.96447 9.32843C4.7692 9.52369 4.7692 9.84027 4.96447 10.0355C5.15973 10.2308 5.47631 10.2308 5.67157 10.0355L8.85355 6.85355ZM7.5 7H8.5V6H7.5V7Z"
+                          fill="white"></path>
+                </svg>
+            </summary>
+            <div class="help-text center mb-8">{{expandInfoText}}
+            </div>
+            <div class="help-number center mb-2 bold"><a href="tel:0443230023">0 44 323 00 23</a></div>
+            <div class="help-number center mb-8 bold"><a href="tel:0800303232">0 800 30 32 32</a></div>
+        </details>
+        {{footer}}
+        <!--<div class="help-footer center mb-8">Платіжні послуги надає АТ «АСВІО БАНК»</div>
+        <div class="help-footer center">Послуги оператора платіжної інфраструктури надає ТОВ&nbsp;«АМО ФІНТЕХ»</div>-->
+        <script src="/public/script2.js" onerror="document.documentElement.classList.add('no-otp-js')"></script>
+    </div>
+</div>
+
+</body>
+</html>
